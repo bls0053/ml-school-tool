@@ -1,15 +1,25 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { LineChartLabel } from './ui/line-chart-label';
-import { DoubleBarChart } from './ui/double-bar-chart';
+import { LineChartLabel } from '../ui/line-chart-label';
+import { DoubleBarChart } from '../ui/double-bar-chart';
 
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu"
 import * as React from "react"
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
+import { CircularProgress } from '@mui/material';
+import { ArrowLeft } from 'lucide-react';
 
 type LineData = {
     label: string;
-    value: number;
+    achvz: number;
 };
 
 type BarData = {
@@ -22,25 +32,50 @@ interface Rows {
     [key: string]: number[]
 }
 
+type Metrics = {
+    [key: string]: {
+      Metrics: number;
+    };
+  };
 
-const Predict: React.FC = () => {
+interface PredictProps {
+    predictInit: () => void
+    goBackToData: () => void
+    goBackToLasso: () => void
+    bool: boolean
+}
+
+const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goBackToData }) => {
 
     // const [pred, setPred] = useState();
     // const [index, setIndex] = useState();
     const [lineData, setLineData] = useState<LineData[]>([]);
     const [barData, setBarData] = useState<BarData[]>([]);
+    const [metrics, setMetrics] = useState<Metrics>({});
 
     const [rows, setRows] = useState<Rows>({});
-
     const [data, setData] = useState();
+    const [normal, setNormal] = useState(true);
     
     
     useEffect(() => {
-        predict();
 
-    }, []);
+        console.log("pred{bool:", bool, "}")
 
-    
+        if (bool==false) {
+
+            console.log("pred{ initialized pred }")
+
+            predict();
+        }
+        else {
+            return;
+        }
+        
+    }, [predictInit]);
+
+
+
     const predict = async () => {
         try {
             const response = await fetch('http://127.0.0.1:5000/api/run_predictor');
@@ -49,9 +84,10 @@ const Predict: React.FC = () => {
             if (data.index !== undefined && data.pred !== undefined) {
                 setData(data)
                 setRows(data.df)
+                setMetrics(data.metrics)
                 const newLineData: LineData = {
                     label: String(data.index),
-                    value: data.pred
+                    achvz: data.pred
                 };
                 setLineData(prevData => [...prevData, newLineData]);
             } 
@@ -62,6 +98,7 @@ const Predict: React.FC = () => {
         catch (error) {
             console.error('Error fetching data:', error);
         }
+        predictInit()
     };
 
 
@@ -69,13 +106,18 @@ const Predict: React.FC = () => {
         try {
             const response = await fetch('http://127.0.0.1:5000/api/fetch_pred');
             const data = await response.json();
+
+            if (data.index == 111 && data.pred == 111) {
+                return;
+            }
         
             if (data.index !== undefined && data.pred !== undefined) {
                 setData(data)
                 setRows(data.df)
+                console.log(metrics)
                 const newLineData: LineData = {
                     label: String(data.index),
-                    value: data.pred
+                    achvz: data.pred
                 };
                 setLineData(prevData => [...prevData, newLineData]);
             } 
@@ -99,10 +141,14 @@ const Predict: React.FC = () => {
 
         return data.map(item => ({
           ...item,
-          start: ((item.start - min) / (max - min)) + .00000001,
-          end: ((item.end - min) / (max - min)) + .00000001
+          start: ((item.start - min) / (max - min)),
+          end: ((item.end - min) / (max - min))
         }));
     };
+
+    const toggleNormal = (() => {
+        setNormal(!normal)
+    })
 
     useEffect(() => {
         console.log(data)
@@ -118,18 +164,32 @@ const Predict: React.FC = () => {
             const normalizedData = normalizeData(processedData);
             console.log('Normalized Data:', normalizedData);
             
-            setBarData(normalizedData);
+            if (normal) {
+                setBarData(normalizedData);
+            }
+            else {
+                setBarData(processedData);
+            } 
         }
-        fetchData()
-        
-            
-    },[rows])
+       
+        if (bool) {
+            fetchData()
+        }
+    },[rows, normal])
 
 
-
+    if (!bool) {
+        return (
+            <div className="">
+                <CircularProgress/>
+            </div>
+        )
+    }
 
     return (
-        <div className="flex flex-col gap-4 p-4 w-full h-full">
+        
+        <div className="flex flex-col gap-4 p-4 w-full h-[75vh]">
+            
             <div className='h-1/2 w-full'>
                 <LineChartLabel data={lineData}></LineChartLabel>
                 {/* <Button onClick={fetchData}></Button> */}
@@ -138,6 +198,29 @@ const Predict: React.FC = () => {
             
             <div className='h-1/2 w-full'>
                 <DoubleBarChart data={barData}></DoubleBarChart>
+            </div>
+            
+            <div className='flex flex-row gap-2 justify-center'>
+                <Button variant="outline" onClick={() => goBackToData()}><ArrowLeft/>Back To Data</Button>
+                <Button variant="outline" onClick={() => goBackToLasso()}><ArrowLeft/>Back To Lasso</Button>
+                <Button variant="outline" onClick={() => toggleNormal()}>Normalize</Button>
+
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                    <Button variant="outline">Metrics</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                        <DropdownMenuLabel>Extra Trees Regressor Metrics</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        
+                        {Object.entries(metrics).map(([key, value]) => (
+                            <DropdownMenuCheckboxItem key={key}>
+                                {`${key}: ${value.Metrics}`}
+                            </DropdownMenuCheckboxItem>))}
+
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
             </div>
         </div>
     )

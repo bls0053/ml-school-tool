@@ -1,10 +1,11 @@
 "use client"
-
+import { ArrowLeft } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { BarNegative } from "@/components/ui/bar-chart-neg.tsx"
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import * as React from "react"
-import { DropdownMenuCheckboxItemProps } from "@radix-ui/react-dropdown-menu"
+
+
 
 import {
   DropdownMenu,
@@ -14,8 +15,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { CircularProgress } from '@mui/material';
 
-type Checked = DropdownMenuCheckboxItemProps["checked"]
 
 type CoefficientData = {
     [key: string]: {
@@ -28,14 +29,22 @@ type ChartData = {
     value: number;
 };
 
-interface DataInitProps {
+interface LassoProps {
     lassoComplete: () => void
+    loadPredictor: () => void
+    goBackToData: () => void
     bool: boolean
 }
 
-const Lasso: React.FC<DataInitProps> = ({ lassoComplete, bool }) => {
+type Metrics = {
+    [key: string]: {
+      Metrics: number;
+    };
+  };
+
+const Lasso: React.FC<LassoProps> = ({ bool, lassoComplete, loadPredictor, goBackToData }) => {
     
-    const [metrics, setMetrics] = useState(null);
+    const [metrics, setMetrics] = useState<Metrics>({});
     const [coefs, setCoefs] = useState<CoefficientData>({});
     const [chartData, setChartData] = useState<ChartData[]>([]);
     const [originalData, setOriginalData] = useState<ChartData[]>([]);
@@ -44,9 +53,14 @@ const Lasso: React.FC<DataInitProps> = ({ lassoComplete, bool }) => {
 
 
     useEffect(() => {
+
+        console.log("lasso{bool:", bool, "}")
+
         if (bool == false) {
             lasso();
             
+            console.log("lasso{ loading lasso }")
+
         }
         else {
             return;
@@ -60,7 +74,9 @@ const Lasso: React.FC<DataInitProps> = ({ lassoComplete, bool }) => {
         .then(response => response.json())
         .then(data => {
             setCoefs(data.coefficients)
+            setMetrics(data.metrics)
             console.log(data.coefficients)
+            console.log(data.metrics)
         })
         .catch(error => console.error('Error fetching data:', error));
         lassoComplete()
@@ -109,6 +125,15 @@ const Lasso: React.FC<DataInitProps> = ({ lassoComplete, bool }) => {
     }, [chartData])
 
 
+    if (!bool) {
+        return (
+            <div className="">
+                <CircularProgress/>
+            </div>
+        )
+    }
+
+
     return (
         
         <div className='flex flex-col gap-2 h-full w-full'>
@@ -117,7 +142,9 @@ const Lasso: React.FC<DataInitProps> = ({ lassoComplete, bool }) => {
                 <BarNegative data={chartData}></BarNegative>
             </div>
                 
-            <div className='flex flex-row gap-2 justify-center'>
+            <div className='flex flex-row flex-wrap justify-center gap-2'>
+                <Button variant="outline" onClick={() => goBackToData()}><ArrowLeft/>Back To Data</Button>
+                
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                     <Button variant="outline">Sort</Button>
@@ -134,25 +161,43 @@ const Lasso: React.FC<DataInitProps> = ({ lassoComplete, bool }) => {
                             onCheckedChange={sortAscending}
                            
                             >
-                        Ascending (value)
+                        Ascending (numerical)
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
                             onCheckedChange={sortDescending}
                             >
-                        Descending (value)
+                        Descending (numerical)
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
                             onCheckedChange={sortAlphaAsc}
                             >
-                        Ascending (label)
+                        Ascending (alphabetical)
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
                             onCheckedChange={sortAlphaDesc}
                             >
-                        Descending (label)
+                        Descending (alphabetical)
                         </DropdownMenuCheckboxItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
+                
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                    <Button variant="outline">Metrics</Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                        <DropdownMenuLabel>Lasso Metrics</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        
+                        {Object.entries(metrics).map(([key, value]) => (
+                            <DropdownMenuCheckboxItem key={key}>
+                                {`${key}: ${value.Metrics}`}
+                            </DropdownMenuCheckboxItem>))}
+
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
+                <Button variant="outline" onClick={() => loadPredictor()}>Proceed</Button>
             </div>
         </div>
     )

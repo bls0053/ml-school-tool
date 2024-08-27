@@ -21,20 +21,16 @@ import {
 
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  achvz: {
+    label: "achvz",
     color: "hsl(var(--chart-variant-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-variant-2))",
-  },
+  }
 } satisfies ChartConfig
 
 
 interface Element {
   label: string;
-  value: number;
+  achvz: number;
 }
 
 type Data = Element[];
@@ -47,8 +43,8 @@ export function LineChartLabel({ data }: LineChartProps ) {
     return (
         <Card className="flex flex-col h-full w-full">
             <CardHeader className="">
-                <CardTitle>Line Chart - Dots</CardTitle>
-                <CardDescription>January - June 2024</CardDescription>
+                <CardTitle>Model Progress</CardTitle>
+                <CardDescription></CardDescription>
             </CardHeader>
             <CardContent className="w-full h-4/6">
                 <ChartContainer className="w-full h-full" config={chartConfig}>
@@ -74,12 +70,12 @@ export function LineChartLabel({ data }: LineChartProps ) {
                         content={<ChartTooltipContent hideLabel />}
                         />
                         <Line
-                        dataKey="value"
+                        dataKey="achvz"
                         type="natural"
-                        stroke="var(--color-desktop)"
+                        stroke="var(--color-achvz)"
                         strokeWidth={2}
                         dot={{
-                            fill: "var(--color-desktop)",
+                            fill: "var(--color-achvz)",
                         }}
                         activeDot={{
                             r: 6,

@@ -1,81 +1,51 @@
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+} from 'react-router-dom';
 
-import './App.css'
-import { Header } from './components/header'
-import { useEffect, useState } from 'react'
-import { Pie_Chart } from './components/charts/Pie_Chart'
-import { Button } from "@/components/ui/button"
+// Import your components (pages)
+import Schools from '@/pages/Schools';
+import Page2 from '@/pages/Page2';
+import Page3 from '@/pages/Page3';
+import Home from '@/pages/Home';
 
-import DataLoad from './components/dataLoad'
-import DataInit from './components/dataInit'
-import Lasso from './components/lasso'
-import Predict from './components/predictor'
+import { ThemeProvider } from "@/components/generic-components/theme-provider"
 
+const App: React.FC = () => {
+  return (
+  <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/schools">School Tool</Link>
+            </li>
+            <li>
+              <Link to="/about">Page2</Link>
+            </li>
+            <li>
+              <Link to="/contact">Page3</Link>
+            </li>
+          </ul>
+        </nav>
 
-
-function App() {
-  
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [dataLoaded, setDataLoaded] = useState(false);
-  const [lassoLoaded, setLassoLoaded] = useState(false);
-  const [go2, setGo2] = useState(false);
-  
-  const resetAll = () => {
-    setIsInitialized(false)
-    setDataLoaded(false)
-    setLassoLoaded(false)
-  }
-
-  const resetData = () => {
-    setDataLoaded(false)
-    setLassoLoaded(false)
-  }
-  
-
-
-
-
-
-
-
-return (
-
-<div className="bg-gradient-to-br from-blue-900 via-slate-700 to-blue-900 ">
-  <Header></Header>
-
-
-  <div className="flex flex-row w-4/5 mx-auto justify-center">
-    
-    <div className="flex flex-col justify-center p-4 w-3/5">  
-      {/* Initialize and Load Data */}
-      <DataInit initComplete={() => setIsInitialized(true)} bool={isInitialized} />
-      <div className="">
-        {isInitialized && <DataLoad dataLoadedComplete={() => setDataLoaded(true)} bool={dataLoaded}/>}
+        {/* Define your routes */}
+        <Routes>
+          <Route path="/" element={<Home />}/>
+          <Route path="/schools" element={<Schools />} />
+          <Route path="/Page2" element={<Page2 />} />
+          <Route path="/Page3" element={<Page3 />} />
+        </Routes>
       </div>
-    </div>
-
-    {/* Initialize and Load Lasso */}
-    <div className='flex flex-col justify-center p-4 w-full'>  
-        {dataLoaded && <Lasso lassoComplete={() => setLassoLoaded(true)} bool={lassoLoaded}/>}
-    </div>
-  </div>
-
-
-  <div className="flex flex-row w-4/5 mx-auto justify-center h-[75vh]">
-    {lassoLoaded && <Predict/> }
-  </div>
-
-  <div className='flex flex-row justify-center gap-4 mt-8'>
-
-    <Button variant="outline" onClick={resetAll}>Reset Init</Button>
-    <Button variant="outline" onClick={resetData}>Reset Data</Button>
-    <Button variant="outline" onClick={() => setLassoLoaded(false)}>Reset Lasso</Button>
-
-  </div>
-
-  
-</div>
-
-)
+    </Router>
+  </ThemeProvider>
+  );
 }
 
-export default App
+export default App;

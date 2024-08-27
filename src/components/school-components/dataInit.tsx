@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-
+import { CircularProgress } from '@mui/material';
 
 
 interface DataInitProps {
@@ -10,7 +10,13 @@ interface DataInitProps {
 const DataInit: React.FC<DataInitProps> = ({ initComplete, bool }) => {
     
     useEffect(() => {
+
+        console.log("dataInit{bool:", bool, "}")
+
         if (bool==false) {
+
+            console.log("dataInit{ initialized data }")
+
             initData();
         }
         else {
@@ -19,15 +25,25 @@ const DataInit: React.FC<DataInitProps> = ({ initComplete, bool }) => {
     }, [initComplete]);
     
     const initData = async () => {
-        const response = await fetch(`http://127.0.0.1:5000/api/init_data`, {method: 'GET'})
-        if (!response.ok) {
+        const promise = await fetch(`http://127.0.0.1:5000/api/init_data`, {method: 'GET'})
+        if (!promise.ok) {
             // Handle HTTP errors (e.g., 404, 500)
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTP error! Status: ${promise.status}`);
         }
         else {
             initComplete();
         }
     }
+
+
+    if (!bool) {
+        return (
+            <div className="">
+                
+            </div>
+        )
+    }
+
 
     return (
         <div></div>

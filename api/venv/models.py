@@ -41,7 +41,7 @@ def lasso_cv(df, tolerance, alpha):
     # Lasso cross validation w/ tuning
     if (tolerance == "none" and alpha == "none"):
         param_grid = {
-            'alpha' : [0.001, 0.01],
+            'alpha' : [0.001, 0.01, 0.01, 0.1, 1],
             'tol' : [0.0001, 0.001, 0.01, 0.1, 1]
         }
 
@@ -71,9 +71,9 @@ def lasso_cv(df, tolerance, alpha):
     lasso2 = lasso_cv.best_estimator_
     lasso2.fit(X_train, y_train)
 
-    df_t = pd.DataFrame(columns = ["Mean absolute Error", "Mean Squared Error", "R2 Score", "Lasso Vars"])
-    values = [mean_absolute_error(y_test, y_pred2), mean_squared_error(y_test, y_pred2), r2_score(y_test, y_pred2), lasso_cv.best_estimator_]
-    df_t.loc[0] = values
+    metric_names = ["Mean absolute Error", "Mean Squared Error", "R2 Score", "Alpha", "Tolerance"]
+    values = [mean_absolute_error(y_test, y_pred2), mean_squared_error(y_test, y_pred2), r2_score(y_test, y_pred2), lasso_cv.best_params_['alpha'], lasso_cv.best_params_['tol']]
+    df_t = pd.DataFrame(values, columns =['Metrics'], index=metric_names)
 
     feature_names = df.columns.tolist()
     feature_names.remove('achvz')
@@ -128,11 +128,15 @@ def ext_trees(df):
 
         # Reintroduce later in separate function
     # print('ExtraTreesRegressor MAE: %.3f (%.3f)' % (np.mean(n_scores), np.std(n_scores)))
-
     y_pred = regressor.predict(X_test)
-    
     y_test = np.array(y_test)
+
+    metric_names = ["Mean absolute Error", "Mean Squared Error", "R2 Score"]
+    values = [mean_absolute_error(y_test, y_pred), mean_squared_error(y_test, y_pred), r2_score(y_test, y_pred)]
+    df_t = pd.DataFrame(values, columns =['Metrics'], index=metric_names)
+
+    print(df_t)
 
     # act_v_pred = pd.DataFrame({'Actual': y_test, 'Predicted': y_pred})
 
-    return regressor
+    return regressor, df_t

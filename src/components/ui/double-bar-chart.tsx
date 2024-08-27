@@ -25,7 +25,7 @@ const chartConfig = {
   },
   end: {
     label: "end",
-    color: "hsl(var(--chart-variant-5))",
+    color: "hsl(var(--chart-variant-2))",
   },
 } satisfies ChartConfig
 
@@ -48,12 +48,12 @@ export function DoubleBarChart({ data }: BarChartProps ) {
   return (
     <Card className="h-full w-full">
       <CardHeader>
-        <CardTitle>Bar Chart - Multiple</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardTitle>Prediction Results</CardTitle>
+        <CardDescription></CardDescription>
       </CardHeader>
       <CardContent className="h-4/6 w-full">
         <ChartContainer className="h-full w-full" config={chartConfig}>
-          <BarChart accessibilityLayer barCategoryGap="10%" barGap={1} data={data}>
+          <BarChart accessibilityLayer barCategoryGap="20%" barGap={2} data={data}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="label"
@@ -61,7 +61,6 @@ export function DoubleBarChart({ data }: BarChartProps ) {
               tickMargin={10}
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
-
             />
             <YAxis type="number" scale="auto"/>
             <ChartTooltip

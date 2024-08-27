@@ -7,7 +7,7 @@ import pandas as pd
 # Predictor object for pred_features
 class FeaturePredictor:
 
-    reduction = .01
+    reduction = .015
 
     def __init__(self,
                  regressor,

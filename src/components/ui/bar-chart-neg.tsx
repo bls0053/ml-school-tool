@@ -39,12 +39,14 @@ const chartConfig = {
 
 export function BarNegative({ data }: BarNegativeProps) {
   return (
-    <Card className="h-full bg-slate-800 bg-opacity-30">
-      <CardHeader>
-        <CardTitle>Bar Chart - Negative</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+    <Card className="h-full w-full">
+      <CardHeader className="h-[10%] w-full">
+        <CardTitle>Lasso Regression</CardTitle>
+        <CardDescription className="p-2">
+            Shown below is lasso feature importance
+        </CardDescription>
       </CardHeader>
-      <CardContent className="h-5/6 w-full">
+      <CardContent className="h-[80%] w-full">
         <ChartContainer config={chartConfig} className="h-full w-full">
           <BarChart className=""
             layout="vertical"
@@ -83,14 +85,16 @@ export function BarNegative({ data }: BarNegativeProps) {
           </BarChart>
         </ChartContainer>
       </CardContent>
-      {/* <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+      <CardFooter className="flex-col items-start gap-2 text-sm h-[10%] w-full">
+        <div className="flex gap-2 font-medium leading-none text-muted-foreground">
+          The larger the magnitude of a coefficient, 
+          the higher the relationship it has on the target variable (achvz).
         </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Positive values denote as the feature increases, the target variable increases. 
+          Negative values have an inverse relationship.
         </div>
-      </CardFooter> */}
+      </CardFooter>
     </Card>
   )
 }
