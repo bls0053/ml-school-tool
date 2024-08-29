@@ -28,7 +28,14 @@ function Schools() {
   const [alpha, setAlpha] = useState<string>('');
   const [tolerance, setTolerance] = useState<string>('');
   const [reduction, setReduction] = useState<string>('0.0');
-  
+
+  // Prediciton Params
+  const [school, setSchool] = useState<string>('1');
+  const [earlyExit, setEarlyExit] = useState<string>('100');
+  const [allowedError, setAllowedError] = useState<string>('.05');
+  const [targetVal, setTargetVal] = useState<string>('');
+  const [lock, setLock] = useState<string[]>([]);
+
 
   const goBackToData = () => {
     setLassoClicked(false); 
@@ -107,13 +114,25 @@ return (
         {dataLoaded && 
         lassoClicked && 
         <Lasso 
+          school={school}
+          earlyExit={earlyExit}
+          allowedError={allowedError}
+          targetVal={targetVal}
+          lock={lock}
+          setSchool={setSchool}
+          setEarlyExit={setEarlyExit}
+          setAllowedError={setAllowedError}
+          setTargetVal={setTargetVal}
+          setLock={setLock}
+
           alpha={alpha}
           tolerance={tolerance}
           reduction={reduction}
 
           goBackToData={() => goBackToData()} 
           lassoComplete={() => setLassoLoaded(true)} 
-          loadPredictor={() => setPredictorClicked(true)} 
+          loadPredictor={() => setPredictorClicked(true)}
+          predictorClicked={predictorClicked} 
           bool={lassoLoaded}/>}
 
     </div>
@@ -126,6 +145,13 @@ return (
     {lassoLoaded &&
     predictorClicked && 
     <Predict
+
+    earlyExit={earlyExit}
+    allowedError={allowedError}
+    targetVal={targetVal}
+    school={school}
+    // lock={lock}
+
     goBackToData={() => goBackToData()} 
     goBackToLasso={() => goBackToLasso()} 
     predictInit={() => setPredictInitialized(true)} 

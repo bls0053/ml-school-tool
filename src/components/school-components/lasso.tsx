@@ -5,7 +5,14 @@ import { BarNegative } from "@/components/ui/bar-chart-neg.tsx"
 import { Button } from '../ui/button';
 import * as React from "react"
 
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+  } from "@/components/ui/popover"
 
 import {
   DropdownMenu,
@@ -17,6 +24,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { CircularProgress } from '@mui/material';
 
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from "@/components/ui/tooltip"
 
 type CoefficientData = {
     [key: string]: {
@@ -30,12 +43,24 @@ type ChartData = {
 };
 
 interface LassoProps {
+    school: string
+    earlyExit: string
+    allowedError: string
+    targetVal: string
+    lock: string[]
+    setSchool: (arg0: string) => void
+    setEarlyExit: (arg0: string) => void
+    setAllowedError: (arg0: string) => void
+    setTargetVal: (arg0: string) => void
+    setLock: (arg0: string[]) => void
+
     alpha: string
     tolerance: string
     reduction: string
 
     lassoComplete: () => void
     loadPredictor: () => void
+    predictorClicked: boolean
     goBackToData: () => void
     bool: boolean
 }
@@ -46,8 +71,27 @@ type Metrics = {
     };
   };
 
-const Lasso: React.FC<LassoProps> = ({ bool, lassoComplete, loadPredictor, goBackToData,
-    alpha, tolerance, reduction, }) => {
+const Lasso: React.FC<LassoProps> = ({ bool, 
+    lassoComplete, 
+    loadPredictor,
+    predictorClicked, 
+    goBackToData,
+    alpha, 
+    tolerance, 
+    reduction, 
+
+    school,
+    earlyExit,
+    allowedError,
+    targetVal,
+    lock,
+    setSchool,
+    setEarlyExit,
+    setAllowedError,
+    setTargetVal,
+    setLock
+
+}) => {
     
     const [metrics, setMetrics] = useState<Metrics>({});
     const [coefs, setCoefs] = useState<CoefficientData>({});
@@ -219,7 +263,135 @@ const Lasso: React.FC<LassoProps> = ({ bool, lassoComplete, loadPredictor, goBac
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button variant="outline" onClick={() => loadPredictor()}>Proceed</Button>
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button variant="outline" disabled={predictorClicked}>Tune Prediction</Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80">
+                        <div className="grid gap-4">
+                        <div className="space-y-2">
+                            <h4 className="font-medium leading-none">Params</h4>
+                            <p className="text-sm text-muted-foreground">
+                                Set the parameters for the 'achvz' prediction.
+                            </p>
+                        </div>
+                        <div className="grid gap-2">
+                        <div className="grid grid-cols-3 items-center gap-4">
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Label htmlFor="school">School Index:</Label>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className='flex flex-col gap-2 w-72'>
+                                            <p>Regularization parameter:</p> 
+                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
+                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                        </div>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <Input
+                                id="school"
+                                defaultValue={school}
+                                onChange={(e) => setSchool(e.target.value)}
+                                className="col-span-2 h-8"
+                            />
+                        </div>
+                        <div className="grid grid-cols-3 items-center gap-4">
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Label htmlFor="ee">Early Exit:</Label>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className='flex flex-col gap-2 w-72'>
+                                            <p>Regularization parameter:</p> 
+                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
+                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                        </div>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <Input
+                                id="ee"
+                                defaultValue={earlyExit}
+                                onChange={(e) => setEarlyExit(e.target.value)}
+                                className="col-span-2 h-8"
+                            />
+                        </div>
+                        <div className="grid grid-cols-3 items-center gap-4">
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Label htmlFor="allerr">Allowed Error:</Label>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className='flex flex-col gap-2 w-72'>
+                                            <p>Regularization parameter:</p> 
+                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
+                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                        </div>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <Input
+                                id="allerr"
+                                defaultValue={allowedError}
+                                onChange={(e) => setAllowedError(e.target.value)}
+                                className="col-span-2 h-8"
+                            />
+                        </div>
+                        <div className="grid grid-cols-3 items-center gap-4">   
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Label htmlFor="tarval">Target Value:</Label>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className='flex flex-col gap-2 w-72'>
+                                            <p>Regularization parameter:</p> 
+                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
+                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                        </div>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <Input
+                                id="tarval"
+                                defaultValue={targetVal}
+                                onChange={(e) => setTargetVal(e.target.value)}
+                                className="col-span-2 h-8"
+                            />
+                        </div>
+                        <div className="grid grid-cols-3 items-center gap-4">
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Label htmlFor="lock">Feature Lock:</Label>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className='flex flex-col gap-2 w-72'>
+                                            <p>Regularization parameter:</p> 
+                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
+                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                        </div>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <Input
+                                id="lock"
+                                defaultValue={targetVal}
+                                onChange={(e) => setTargetVal(e.target.value)}
+                                className="col-span-2 h-8"
+                            />
+                        </div>
+                        </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+
+                <Button variant="outline" onClick={() => loadPredictor()} disabled={predictorClicked}>Proceed</Button>
             </div>
         </div>
     )

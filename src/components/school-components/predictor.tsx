@@ -42,10 +42,16 @@ interface PredictProps {
     predictInit: () => void
     goBackToData: () => void
     goBackToLasso: () => void
+
+    school: string
+    earlyExit: string
+    allowedError: string
+    targetVal: string
     bool: boolean
 }
 
-const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goBackToData }) => {
+const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goBackToData,
+    school, earlyExit, allowedError, targetVal }) => {
 
     // const [pred, setPred] = useState();
     // const [index, setIndex] = useState();
@@ -66,7 +72,7 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
 
             console.log("pred{ initialized pred }")
 
-            predict();
+            predict(school, earlyExit, allowedError, targetVal);
         }
         else {
             return;
@@ -76,9 +82,20 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
 
 
 
-    const predict = async () => {
+    const predict = async (school:string, earlyExit: string, allowedError: string, targetVal: string) => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/run_predictor');
+            const response = await fetch(`http://127.0.0.1:5000/api/run_predictor`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    school: school,
+                    earlyExit: earlyExit,
+                    allowedError: allowedError,
+                    targetVal: targetVal
+                }),
+            });
             const data = await response.json();
         
             if (data.index !== undefined && data.pred !== undefined) {

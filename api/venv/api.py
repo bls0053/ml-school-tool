@@ -126,7 +126,7 @@ def lasso():
     return jsonify(response)
 
 
-@app.route("/api/run_predictor", methods=['GET'])
+@app.route("/api/run_predictor", methods=['POST'])
 def run_predictor():
 
     global pred
@@ -137,11 +137,17 @@ def run_predictor():
     global df_red_sub
     global df_red_coef
 
-    school = 3
-    target = 1.5
-    # reg = arr[2]
-    allErr = .005
-    ee = 100
+    print("in\n\n")
+
+    response = request.json
+
+    print("out\n\n")
+
+    school = int(response.get('school')) - 1
+    ee = float(response.get('earlyExit'))
+    allErr = float(response.get('allowedError'))
+    target = float(response.get('targetVal'))
+
     lock_feat = []
 
 
