@@ -30,6 +30,10 @@ type ChartData = {
 };
 
 interface LassoProps {
+    alpha: string
+    tolerance: string
+    reduction: string
+
     lassoComplete: () => void
     loadPredictor: () => void
     goBackToData: () => void
@@ -42,7 +46,8 @@ type Metrics = {
     };
   };
 
-const Lasso: React.FC<LassoProps> = ({ bool, lassoComplete, loadPredictor, goBackToData }) => {
+const Lasso: React.FC<LassoProps> = ({ bool, lassoComplete, loadPredictor, goBackToData,
+    alpha, tolerance, reduction, }) => {
     
     const [metrics, setMetrics] = useState<Metrics>({});
     const [coefs, setCoefs] = useState<CoefficientData>({});
@@ -57,7 +62,7 @@ const Lasso: React.FC<LassoProps> = ({ bool, lassoComplete, loadPredictor, goBac
         console.log("lasso{bool:", bool, "}")
 
         if (bool == false) {
-            lasso();
+            lasso(alpha, tolerance, reduction);
             
             console.log("lasso{ loading lasso }")
 
@@ -69,19 +74,36 @@ const Lasso: React.FC<LassoProps> = ({ bool, lassoComplete, loadPredictor, goBac
 
     
 
-    const lasso = async () => {
-        await fetch(`http://127.0.0.1:5000/api/lasso`)
-        .then(response => response.json())
-        .then(data => {
-            setCoefs(data.coefficients)
-            setMetrics(data.metrics)
-            console.log(data.coefficients)
-            console.log(data.metrics)
-        })
-        .catch(error => console.error('Error fetching data:', error));
-        lassoComplete()
-        
-        
+    const lasso = async (alpha: string, tolerance: string, reduction: string) => {
+
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/api/lasso`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    alpha: alpha,
+                    tolerance: tolerance,
+                    reduction: reduction
+            }),
+        });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            else {
+                const data = await response.json();
+                setCoefs(data.coefficients)
+                setMetrics(data.metrics)
+                console.log(data.coefficients)
+                console.log(data.metrics)
+            }
+        }
+        catch (error) {
+            console.error('Error fetching data:', error);
+        }
+        lassoComplete();
     };
 
 
@@ -191,7 +213,7 @@ const Lasso: React.FC<LassoProps> = ({ bool, lassoComplete, loadPredictor, goBac
                         
                         {Object.entries(metrics).map(([key, value]) => (
                             <DropdownMenuCheckboxItem key={key}>
-                                {`${key}: ${value.Metrics}`}
+                                {`${key}: ${parseFloat(value.Metrics.toFixed(3))}`}
                             </DropdownMenuCheckboxItem>))}
 
                     </DropdownMenuContent>

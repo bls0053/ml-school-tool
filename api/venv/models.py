@@ -26,8 +26,10 @@ def lasso_cv(df, tolerance, alpha):
     X = df.drop('achvz', axis=1)
     y = df['achvz']
 
+    # , random_state = 64
+
     # train_test_split: test=.2, train=.8
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state = 64)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
 
     # Standardize data
     scaler = StandardScaler()
@@ -45,23 +47,23 @@ def lasso_cv(df, tolerance, alpha):
             'tol' : [0.0001, 0.001, 0.01, 0.1, 1]
         }
 
-    # elif (tolerance != "none" and alpha == "none"):
-    #     param_grid = {
-    #         'alpha' : [0.00001, 0.0001, 0.001, 0.01],
-    #         'tol' : [tolerance]
-    #     }
+    elif (tolerance != "none" and alpha == "none"):
+        param_grid = {
+            'alpha' : [0.00001, 0.0001, 0.001, 0.01],
+            'tol' : [tolerance]
+        }
 
-    # elif (tolerance == "none" and alpha != "none"):
-    #     param_grid = {
-    #         'alpha' :[alpha],
-    #         'tol' : [0.0001, 0.001, 0.01, 0.1, 1]
-    #     }
+    elif (tolerance == "none" and alpha != "none"):
+        param_grid = {
+            'alpha' :[alpha],
+            'tol' : [0.0001, 0.001, 0.01, 0.1, 1]
+        }
 
-    # elif (tolerance != "none" and alpha != "none"):
-    #     param_grid = {
-    #         'alpha' : [alpha],
-    #         'tol' : [tolerance]
-    #     }
+    elif (tolerance != "none" and alpha != "none"):
+        param_grid = {
+            'alpha' : [alpha],
+            'tol' : [tolerance]
+        }
 
     lasso_cv = GridSearchCV(lasso, param_grid, cv = 5, n_jobs = -1)
     lasso_cv.fit(X_train, y_train)

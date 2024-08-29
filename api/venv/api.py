@@ -82,18 +82,43 @@ def get_length():
     return jsonify(len(df))
 
 
-@app.route('/api/lasso', methods=['GET'])
+@app.route('/api/lasso', methods=['POST'])
 def lasso():
     
     global df_sub_coef
     global df_sub
+    global df_red_sub
+    global df_red_coef
 
-    df_sub_t, df_sub_coef = models.lasso_cv(df_sub, "none", "none")
+    data = request.json
+    alpha = data.get('alpha')
+    tolerance = data.get('tolerance')
+    reduction = float(data.get('reduction'))
+
+    if (alpha == ''):
+        alpha="none"
+    else:
+        alpha = float(alpha)
+
+    if (tolerance == ''):
+        tolerance="none"
+    else:
+        tolerance = float(tolerance)
+
+
+    df_sub_t, df_sub_coef = models.lasso_cv(df_sub, tolerance, alpha)
+
+    df_red_coef = df_sub_coef[abs(df_sub_coef['Coefficients']) > reduction]
+    df_red_sub = df_sub[df_sub.columns[df_sub.columns.isin(df_red_coef.index)]]
+    df_red_sub['achvz'] = df_sub['achvz']
+
+    print(df_sub_coef)
     print(df_sub_t)
+    print(df_red_sub)
     
     response = {
         'metrics' : df_sub_t.to_dict(orient='index'),
-        'coefficients' : df_sub_coef.to_dict(orient='index')
+        'coefficients' : df_red_coef.to_dict(orient='index')
     }
 
 
@@ -109,6 +134,8 @@ def run_predictor():
     global pred_results
     global x
     global first_df
+    global df_red_sub
+    global df_red_coef
 
     school = 3
     target = 1.5
@@ -117,20 +144,21 @@ def run_predictor():
     ee = 100
     lock_feat = []
 
+
     # if (reg.isin(new_models)): # IMPLEMENT LAZYPREDICT
     #     mod = reg
     # else:
     #     mod = models.ext_trees(df)
     
-    mod, metrics = models.ext_trees(df_sub)
+    mod, metrics = models.ext_trees(df_red_sub)
     pred = FeaturePredictor(regressor=mod, target=target)
 
     # Initializes starting feature weights / value to be changed
-    x = df_sub.drop('achvz', axis=1)
-    pred.init_weights(df_sub_coef, x, lock_feat)
+    x = df_red_sub.drop('achvz', axis=1)
+    pred.init_weights(df_red_coef, x, lock_feat)
     pred.allowed_error = allErr
     pred.early_exit = ee
-    pred_row = df_sub.loc[[school]]    
+    pred_row = df_red_sub.loc[[school]]    
     pred.curr_val = pred_row.loc[pred_row.index[0]]['achvz']
     
     # Original row

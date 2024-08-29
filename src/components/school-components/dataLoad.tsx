@@ -1,11 +1,24 @@
 import { useState, useEffect } from 'react';
 import { ColumnDef } from "@tanstack/react-table"
-import { CircularProgress } from '@mui/material';
 import { DataTable } from "@/components/school-components/data-table"
 import { Button } from '../ui/button';
-
-
 import { ArrowLeft, ArrowRight } from "lucide-react"
+
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from "@/components/ui/tooltip"
+
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -20,13 +33,22 @@ interface School {
 }
 
 interface DataLoadProps {
+    alpha: string
+    tolerance: string
+    reduction: string
+    setAlpha: (arg0: string) => void
+    setTolerance: (arg0: string) => void
+    setReduction: (arg0: string) => void
+
     dataLoadedComplete: () => void
     loadLasso: () => void
+    lassoClicked: boolean
     bool: boolean
 }
 
 
-const DataLoad: React.FC<DataLoadProps> = ({ bool, dataLoadedComplete, loadLasso }) => {
+const DataLoad: React.FC<DataLoadProps> = ({ bool, lassoClicked, dataLoadedComplete, loadLasso,
+    alpha, tolerance, reduction, setAlpha, setTolerance, setReduction}) => {
 
 
     const [data, setData] = useState<School[]>([]);
@@ -153,31 +175,112 @@ const DataLoad: React.FC<DataLoadProps> = ({ bool, dataLoadedComplete, loadLasso
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                    <Button variant="outline">Sort</Button>
+                    <Button variant="outline">#PerPage</Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-28">
                         <DropdownMenuLabel>Entries / Page</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuCheckboxItem
-                            onCheckedChange={handleCheckboxChange(25)}
-                            >
-                        25
+                            onCheckedChange={handleCheckboxChange(25)}>25
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
-                            onCheckedChange={handleCheckboxChange(50)}
-                           
-                            >
-                        50
+                            onCheckedChange={handleCheckboxChange(50)}>50
                         </DropdownMenuCheckboxItem>
                         <DropdownMenuCheckboxItem
-                            onCheckedChange={handleCheckboxChange(100)}
-                            >
-                        100
+                            onCheckedChange={handleCheckboxChange(100)}>100
                         </DropdownMenuCheckboxItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
 
-                <Button variant="outline" onClick={() => loadLasso()}>Proceed</Button>
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button variant="outline" disabled={lassoClicked}>Tune Lasso</Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80">
+                        <div className="grid gap-4">
+                        <div className="space-y-2">
+                            <h4 className="font-medium leading-none">Params</h4>
+                            <p className="text-sm text-muted-foreground">
+                            Set the parameters for the Lasso model.
+                            </p>
+                        </div>
+                        <div className="grid gap-2">
+                            <div className="grid grid-cols-3 items-center gap-4">
+
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Label htmlFor="alpha">Alpha:</Label>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className='flex flex-col gap-2 w-72'>
+                                            <p>Regularization parameter:</p> 
+                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
+                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                        </div>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <Input
+                                id="alpha"
+                                defaultValue={alpha}
+                                onChange={(e) => setAlpha(e.target.value)}
+                                className="col-span-2 h-8"
+                            />
+                            </div>
+                            <div className="grid grid-cols-3 items-center gap-4">
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Label htmlFor="tolerance">Tolerance:</Label>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className='flex flex-col gap-2 w-72'>
+                                            <p>Convergence Criterion:</p> 
+                                            <p>Responsible for determining when the algorithm halts.</p>
+                                            <p>As Tolerance increases, the algorithm might stop too early.</p>
+                                            <p>As Tolerance decreases, the algorithm becomes more precise - but also may not converge.</p>
+                                        </div>
+                                            
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <Input
+                                id="tolerance"
+                                defaultValue={tolerance}
+                                onChange={(e) => setTolerance(e.target.value)}
+                                className="col-span-2 h-8"
+                            />
+                            </div>
+                            <div className="grid grid-cols-3 items-center gap-4">
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Label htmlFor="reduction">Reduction:</Label>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className='flex flex-col gap-2 w-72'>
+                                            <p>Reduction Threshold:</p> 
+                                            <p>Arbitrary non-Lasso threshold variable for removing coefficients</p>
+                                            <p>Can be used to remove coefficients under a desired value.</p>
+                                        </div>
+                                            
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
+                            <Input
+                                id="reduction"
+                                defaultValue={reduction}
+                                onChange={(e) => setReduction(e.target.value)}
+                                className="col-span-2 h-8"
+                            />
+                            </div>
+                        </div>
+                        </div>
+                    </PopoverContent>
+                </Popover>
+
+                <Button variant="outline" onClick={() => loadLasso()} disabled={lassoClicked}>Proceed</Button>
             </div>
                 
         </div>

@@ -23,7 +23,11 @@ function Schools() {
   // User Proceed States
   const [lassoClicked, setLassoClicked] = useState(false);
   const [predictorClicked, setPredictorClicked] = useState(false);
-  
+
+  // Lasso Params
+  const [alpha, setAlpha] = useState<string>('');
+  const [tolerance, setTolerance] = useState<string>('');
+  const [reduction, setReduction] = useState<string>('0.0');
   
 
   const goBackToData = () => {
@@ -46,7 +50,7 @@ return (
 <div className="">
   <Header title="School Achievement Hybrid Learning Model"></Header>
 
-  {/* <div className='flex flex-wrap justify-center gap-4 mt-8'> */}
+  <div className='flex flex-wrap justify-center gap-4 mt-8'>
           {/* <Button variant={"ghost"} onClick={() => setIsInitialized(false)}>setIsInit to FALSE</Button>
           <Button variant={"ghost"} onClick={() => setDataLoaded(false)}>setDataLoaded to FALSE</Button>
           <Button variant={"ghost"} onClick={() => setLassoLoaded(false)}>setLassoLoaded to FALSE</Button>
@@ -64,7 +68,7 @@ return (
         
           <Button variant={"outline"} onClick={() => {setLassoClicked(false); setLassoLoaded(false); setPredictInitialized(false); setPredictorClicked(false);}}>Go Back to Data</Button>
           <Button variant={"ghost"} onClick={() => {setLassoClicked(false); setDataLoaded(false);}}>set: LassoClicked | DataLaoded to FALSE</Button> */}
-  {/* </div> */}
+  </div>
 
   <div className="flex flex-col md:flex-row w-4/5 mx-auto justify-center">
     
@@ -81,8 +85,16 @@ return (
         {/* Load Data */}
         {isInitialized && 
         <DataLoad 
+          alpha={alpha}
+          tolerance={tolerance}
+          reduction={reduction}
+          setAlpha={setAlpha}
+          setTolerance={setTolerance}
+          setReduction={setReduction}
+
           dataLoadedComplete={() => setDataLoaded(true)} 
           loadLasso={() => setLassoClicked(true)} 
+          lassoClicked={lassoClicked}
           bool={dataLoaded}/>}
 
       </div>
@@ -95,6 +107,10 @@ return (
         {dataLoaded && 
         lassoClicked && 
         <Lasso 
+          alpha={alpha}
+          tolerance={tolerance}
+          reduction={reduction}
+
           goBackToData={() => goBackToData()} 
           lassoComplete={() => setLassoLoaded(true)} 
           loadPredictor={() => setPredictorClicked(true)} 
