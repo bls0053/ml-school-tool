@@ -1,9 +1,10 @@
 "use client"
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ChevronDown, LockOpen, Lock } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { BarNegative } from "@/components/ui/bar-chart-neg.tsx"
 import { Button } from '../ui/button';
 import * as React from "react"
+
 
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
@@ -30,6 +31,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
   } from "@/components/ui/tooltip"
+
 
 type CoefficientData = {
     [key: string]: {
@@ -98,12 +100,10 @@ const Lasso: React.FC<LassoProps> = ({ bool,
     const [chartData, setChartData] = useState<ChartData[]>([]);
     const [originalData, setOriginalData] = useState<ChartData[]>([]);
 
-
+    const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
 
 
     useEffect(() => {
-
-        console.log("lasso{bool:", bool, "}")
 
         if (bool == false) {
             lasso(alpha, tolerance, reduction);
@@ -185,6 +185,29 @@ const Lasso: React.FC<LassoProps> = ({ bool,
         setOriginalData(transformedData)
     }, [coefs])
 
+    const toggleChecked = (key: string) => {
+        setCheckedItems(prevState => ({
+            ...prevState,
+            [key]: !prevState[key]
+        }));
+    };
+
+    const handleCheckboxClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, key: string) => {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleChecked(key);
+    };
+
+    const getTrueItems = () => {
+        return Object.entries(checkedItems)
+            .filter(([_, value]) => value) 
+            .map(([key]) => key); 
+    };
+
+    useEffect(() => {
+        console.log(checkedItems)
+        setLock(getTrueItems())
+    }, [checkedItems])
 
     useEffect(() => {
         console.log(chartData)
@@ -223,22 +246,26 @@ const Lasso: React.FC<LassoProps> = ({ bool,
                             >
                         Unsorted
                         </DropdownMenuCheckboxItem>
+                        <DropdownMenuSeparator />
                         <DropdownMenuCheckboxItem
                             onCheckedChange={sortAscending}
                            
                             >
                         Ascending (numerical)
                         </DropdownMenuCheckboxItem>
+                        <DropdownMenuSeparator />
                         <DropdownMenuCheckboxItem
                             onCheckedChange={sortDescending}
                             >
                         Descending (numerical)
                         </DropdownMenuCheckboxItem>
+                        <DropdownMenuSeparator />
                         <DropdownMenuCheckboxItem
                             onCheckedChange={sortAlphaAsc}
                             >
                         Ascending (alphabetical)
                         </DropdownMenuCheckboxItem>
+                        <DropdownMenuSeparator />
                         <DropdownMenuCheckboxItem
                             onCheckedChange={sortAlphaDesc}
                             >
@@ -365,26 +392,29 @@ const Lasso: React.FC<LassoProps> = ({ bool,
                             />
                         </div>
                         <div className="grid grid-cols-3 items-center gap-4">
-                            <TooltipProvider>
-                                <Tooltip>
-                                    <TooltipTrigger asChild>
-                                        <Label htmlFor="lock">Feature Lock:</Label>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                        <div className='flex flex-col gap-2 w-72'>
-                                            <p>Regularization parameter:</p> 
-                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
-                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
-                                        </div>
-                                    </TooltipContent>
-                                </Tooltip>
-                            </TooltipProvider>
-                            <Input
-                                id="lock"
-                                defaultValue={targetVal}
-                                onChange={(e) => setTargetVal(e.target.value)}
-                                className="col-span-2 h-8"
-                            />
+                            <Label htmlFor="lock">Feature Lock:</Label>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger className='w-full' asChild>
+                                    <Button variant="outline" className='col-span-2 h-8'><ChevronDown/></Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="max-h-96 overflow-y-auto">
+                                    <DropdownMenuLabel>Extra Trees Regressor Metrics</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    
+                                    {Object.entries(coefs).map(([key]) => (
+                                        <DropdownMenuCheckboxItem 
+                                        key={key} 
+                                        onClick={(e) => handleCheckboxClick(e, key)}
+                                        >
+                                            <div className="flex flex-row gap-4">
+                                                {checkedItems[key] ? <Lock size="1.5em" color='hsl(var(--chart-variant-2))' /> : <LockOpen size="1.5em" />}
+                                                {key}  
+                                            </div>
+                                            
+                                        </DropdownMenuCheckboxItem>))}
+
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                         </div>
                         </div>

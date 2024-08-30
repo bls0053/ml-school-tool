@@ -147,8 +147,8 @@ def run_predictor():
     ee = float(response.get('earlyExit'))
     allErr = float(response.get('allowedError'))
     target = float(response.get('targetVal'))
-
-    lock_feat = []
+    lock_feat = response.get('lock')
+    
 
 
     # if (reg.isin(new_models)): # IMPLEMENT LAZYPREDICT
@@ -240,6 +240,7 @@ def fetch_pred():
             'index': 111,
             'df': 111
         } 
+        print(pred_results)
         
         return jsonify(data)
     

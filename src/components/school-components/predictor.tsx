@@ -47,11 +47,12 @@ interface PredictProps {
     earlyExit: string
     allowedError: string
     targetVal: string
+    lock: string[]
     bool: boolean
 }
 
 const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goBackToData,
-    school, earlyExit, allowedError, targetVal }) => {
+    school, earlyExit, allowedError, targetVal, lock }) => {
 
     // const [pred, setPred] = useState();
     // const [index, setIndex] = useState();
@@ -61,7 +62,7 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
 
     const [rows, setRows] = useState<Rows>({});
     const [data, setData] = useState();
-    const [normal, setNormal] = useState(true);
+    const [normal, setNormal] = useState(false);
     
     
     useEffect(() => {
@@ -72,7 +73,7 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
 
             console.log("pred{ initialized pred }")
 
-            predict(school, earlyExit, allowedError, targetVal);
+            predict(school, earlyExit, allowedError, targetVal, lock);
         }
         else {
             return;
@@ -82,7 +83,7 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
 
 
 
-    const predict = async (school:string, earlyExit: string, allowedError: string, targetVal: string) => {
+    const predict = async (school:string, earlyExit: string, allowedError: string, targetVal: string, lock: string[]) => {
         try {
             const response = await fetch(`http://127.0.0.1:5000/api/run_predictor`, {
                 method: 'POST',
@@ -93,7 +94,8 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
                     school: school,
                     earlyExit: earlyExit,
                     allowedError: allowedError,
-                    targetVal: targetVal
+                    targetVal: targetVal,
+                    lock: lock
                 }),
             });
             const data = await response.json();
@@ -220,7 +222,7 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
             <div className='flex flex-row gap-2 justify-center'>
                 <Button variant="outline" onClick={() => goBackToData()}><ArrowLeft/>Back To Data</Button>
                 <Button variant="outline" onClick={() => goBackToLasso()}><ArrowLeft/>Back To Lasso</Button>
-                <Button variant="outline" onClick={() => toggleNormal()}>Normalize</Button>
+                <Button variant="outline"  onClick={() => toggleNormal()}>{normal ? "Remove Normalize" : "Normalize"}</Button>
 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -232,7 +234,7 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
                         
                         {Object.entries(metrics).map(([key, value]) => (
                             <DropdownMenuCheckboxItem key={key}>
-                                {`${key}: ${value.Metrics}`}
+                                {`${key}: ${parseFloat(value.Metrics.toFixed(3))}`}
                             </DropdownMenuCheckboxItem>))}
 
                     </DropdownMenuContent>

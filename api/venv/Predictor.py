@@ -7,7 +7,7 @@ import pandas as pd
 # Predictor object for pred_features
 class FeaturePredictor:
 
-    reduction = .015
+    reduction = .75
 
     def __init__(self,
                  regressor,
@@ -72,7 +72,18 @@ class FeaturePredictor:
                 continue
             else:
                 sum = float(df.iloc[0][i]) + self.lock.iloc[0][i]
-                df[column] = df[column].replace(df.loc[df.index[0]][column], sum)
+                min = self.lock.iloc[1][i]
+                max = self.lock.iloc[2][i]
+
+                if (sum > min and sum < max):
+                    df[column] = df[column].replace(df.loc[df.index[0]][column], sum)
+                elif (sum < min):
+                    df[column] = df[column].replace(df.loc[df.index[0]][column], min)
+                    self.lock.loc["Lock"][column] = 0
+                elif (sum > max):
+                    df[column] = df[column].replace(df.loc[df.index[0]][column], max)
+                    self.lock.loc["Lock"][column] = 0
+                
 
         return df
 
@@ -89,7 +100,7 @@ class FeaturePredictor:
     # Flips weights
     def modify_weights(self):
         for i, weight in enumerate(self.lock.loc["Weight"]):
-            self.lock.iloc[0][i] = weight * -1  
+            self.lock.iloc[0][i] = weight * (-1)  * (.5)
 
 
 

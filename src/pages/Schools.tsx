@@ -33,7 +33,7 @@ function Schools() {
   const [school, setSchool] = useState<string>('1');
   const [earlyExit, setEarlyExit] = useState<string>('100');
   const [allowedError, setAllowedError] = useState<string>('.05');
-  const [targetVal, setTargetVal] = useState<string>('');
+  const [targetVal, setTargetVal] = useState<string>('1');
   const [lock, setLock] = useState<string[]>([]);
 
 
@@ -150,7 +150,7 @@ return (
     allowedError={allowedError}
     targetVal={targetVal}
     school={school}
-    // lock={lock}
+    lock={lock}
 
     goBackToData={() => goBackToData()} 
     goBackToLasso={() => goBackToLasso()} 
