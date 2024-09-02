@@ -25,7 +25,7 @@ const DataInit: React.FC<DataInitProps> = ({ initComplete, bool }) => {
     }, [initComplete]);
     
     const initData = async () => {
-        const promise = await fetch(`http://127.0.0.1:5000/api/init_data`, {method: 'GET'})
+        const promise = await fetch(`https://ml-school-flask-production.up.railway.app/api/init_data`, {method: 'GET'})
         if (!promise.ok) {
             // Handle HTTP errors (e.g., 404, 500)
             throw new Error(`HTTP error! Status: ${promise.status}`);

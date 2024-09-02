@@ -70,7 +70,7 @@ const DataLoad: React.FC<DataLoadProps> = ({ bool, lassoClicked, dataLoadedCompl
             newStart = start;
         }
         
-        await fetch(`http://127.0.0.1:5000/api/get_data?start=${newStart}&limit=${limit}`)
+        await fetch(`https://ml-school-flask-production.up.railway.app/api/get_data?start=${newStart}&limit=${limit}`)
         
             .then(response => response.json())
             .then(newData => {
@@ -87,7 +87,7 @@ const DataLoad: React.FC<DataLoadProps> = ({ bool, lassoClicked, dataLoadedCompl
 
 
     const fetchLength = async () => {
-        await fetch(`http://127.0.0.1:5000/api/get_length`)
+        await fetch(`https://ml-school-flask-production.up.railway.app/api/get_length`)
         .then(response => response.json())
         .then(newLength => {
             setLength(newLength);

@@ -121,7 +121,7 @@ const Lasso: React.FC<LassoProps> = ({ bool,
     const lasso = async (alpha: string, tolerance: string, reduction: string) => {
 
         try {
-            const response = await fetch(`http://127.0.0.1:5000/api/lasso`, {
+            const response = await fetch(`https://ml-school-flask-production.up.railway.app/api/lasso`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

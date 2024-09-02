@@ -85,7 +85,7 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
 
     const predict = async (school:string, earlyExit: string, allowedError: string, targetVal: string, lock: string[]) => {
         try {
-            const response = await fetch(`http://127.0.0.1:5000/api/run_predictor`, {
+            const response = await fetch(`https://ml-school-flask-production.up.railway.app/api/run_predictor`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
 
     const fetchData = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/fetch_pred');
+            const response = await fetch('https://ml-school-flask-production.up.railway.app/api/fetch_pred');
             const data = await response.json();
 
             if (data.index == 111 && data.pred == 111) {
