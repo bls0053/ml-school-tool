@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead className={`sticky top-0 ${header.column.id === firstColumnName ? 'left-0 z-20 ' : ''}`}
+                  <TableHead className={`sticky top-0 ${header.column.id === firstColumnName ? 'left-0 z-50 ' : 'z-100'}`}
                   key={header.id}>
                     {header.isPlaceholder
                       ? null

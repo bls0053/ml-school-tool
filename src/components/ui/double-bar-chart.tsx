@@ -21,11 +21,11 @@ import {
 const chartConfig = {
   start: {
     label: "start",
-    color: "hsl(var(--chart-variant-1))",
+    color: "hsl(var(--chart-variant-2))",
   },
   end: {
     label: "end",
-    color: "hsl(var(--chart-variant-2))",
+    color: "hsl(var(--chart-variant-1))",
   },
 } satisfies ChartConfig
 

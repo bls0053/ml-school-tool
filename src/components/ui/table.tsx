@@ -79,7 +79,7 @@ const TableHead = React.forwardRef<
     
     style={{backgroundColor: "hsl(var(--background))", color: "hsl(var(--chart-variant-1))"}}
     className={cn(
-      "sticky top-0 h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+      "sticky top-0 h-12 px-4 text-left align-middle border-r border-b font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
       className
     )}
     {...props}

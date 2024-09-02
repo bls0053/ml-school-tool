@@ -9,8 +9,6 @@ import {
 import Schools from '@/pages/Schools';
 import Page2 from '@/pages/Page2';
 import Page3 from '@/pages/Page3';
-import Home from '@/pages/Home';
-
 import { ThemeProvider } from "@/components/generic-components/theme-provider"
 
 const App: React.FC = () => {
@@ -18,7 +16,7 @@ const App: React.FC = () => {
   <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
     <Router>
       <div>
-        <nav>
+        {/* <nav>
           <ul>
             <li>
               <Link to="/">Home</Link>
@@ -33,11 +31,11 @@ const App: React.FC = () => {
               <Link to="/contact">Page3</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
 
         {/* Define your routes */}
         <Routes>
-          <Route path="/" element={<Home />}/>
+          <Route path="/" element={<Schools />}/>
           <Route path="/schools" element={<Schools />} />
           <Route path="/Page2" element={<Page2 />} />
           <Route path="/Page3" element={<Page3 />} />
