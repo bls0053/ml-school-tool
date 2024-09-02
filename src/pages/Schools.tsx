@@ -1,14 +1,12 @@
 
 import { Header } from '../components/generic-components/header'
 import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-
 import DataLoad from '../components/school-components/dataLoad'
 import DataInit from '../components/school-components/dataInit'
 import Lasso from '../components/school-components/lasso'
 import Predict from '../components/school-components/predictor'
 
-import React from 'react'
+
 
 
 

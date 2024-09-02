@@ -4,14 +4,14 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  orderColumns,
+  // orderColumns,
   useReactTable,
 } from "@tanstack/react-table"
 
 import {
   Table,
   TableBody,
-  TableCaption,
+  // TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -29,7 +29,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
 
   const firstColumnName = "Index"
-  const secColumnName = "Achvz"
+
 
   const orderedColumns: ColumnDef<TData, TValue>[] = [
     

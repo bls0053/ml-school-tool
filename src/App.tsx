@@ -2,13 +2,10 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
 } from 'react-router-dom';
 
 // Import your components (pages)
 import Schools from '@/pages/Schools';
-import Page2 from '@/pages/Page2';
-import Page3 from '@/pages/Page3';
 import { ThemeProvider } from "@/components/generic-components/theme-provider"
 
 const App: React.FC = () => {
@@ -37,8 +34,6 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Schools />}/>
           <Route path="/schools" element={<Schools />} />
-          <Route path="/Page2" element={<Page2 />} />
-          <Route path="/Page3" element={<Page3 />} />
         </Routes>
       </div>
     </Router>

@@ -86,7 +86,7 @@ const Lasso: React.FC<LassoProps> = ({ bool,
     earlyExit,
     allowedError,
     targetVal,
-    lock,
+
     setSchool,
     setEarlyExit,
     setAllowedError,
