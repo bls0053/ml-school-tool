@@ -9,34 +9,34 @@ For each trial, the user is presented with 2 main pieces of data
 ### How to Build It Yourself
 ###### Note: Local build only available on the 'Final version' commit [here](https://github.com/bls0053/ml-school-tool/commit/16cca6d4d8fcc3ee68e22faeafa2a95af7ab032b) and all previous commits. Later commits split the repo for deployment purposes - Flask/backend [here](https://github.com/bls0053/ml-school-flask) and React/frontend [here](https://github.com/bls0053/ml-school-tool).
 1. **Clone the Repository**  
-    $`git clone https://github.com/bls0053/ml-school-tool.git`
-    Checkout local version:
-    $`git checkout 16cca6d` 
+    $`git clone https://github.com/bls0053/ml-school-tool.git`\
+    Checkout local version:\
+    $`git checkout 16cca6d`
 
 2. **Activate Python Virtual Environment**  
     Navigate into the api directory:\
     $ `cd ml-school-tool/api`\
     Run:\
-    $`venv/scripts/activate`\
+    $`venv/scripts/activate`
 
 3. **Install Python Dependencies**  
     Navigate into venv:\
     $ `cd ml-school-tool/api/venv`\
     Run:\
-    $ `pip install -r requirements.txt`\
+    $ `pip install -r requirements.txt`
 
 4. **Run the Flask Server** 
-    $ `Flask run`\
+    $ `Flask run`
 
 5. **Install React Dependencies**  
     Navigate into project folder:\
     $ `cd ml-school-tool`\
     Run:\
-    $ `npm install`\
+    $ `npm install`
 
 6. **Run the Development Server**  
     Start the development server with:\ 
-    `npm run dev`\
+    `npm run dev`
 
 ---
 You can check out the full version here [https://ml-school-tool.vercel.app/](https://ml-school-tool.vercel.app/)
