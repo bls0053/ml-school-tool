@@ -1,50 +1,46 @@
-# React + TypeScript + Vite
+# School Achievment Tool
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Currently an ongoing project of the Dept. of EFLT at Auburn University, this is a Flask and React based machine learning tool to improve Alabama school performance. The models used are run on a static dataset hosted on the flask server. The tool works by first utilizing Lasso Regression to reduce the total amount of features present in the dataset. Then a reverse prediction is made utilizing ExtraTreesRegressor. The user can change the parameters of the models used in each step. 
+For each trial, the user is presented with 2 main pieces of data 
 
-Currently, two official plugins are available:
+1. Lasso provides feature strengths from the whole dataset - this gives a general idea of what broadly impacts performance, positively or negatively
+2. Reverse prediction provides the percent change for each feature needed to attain a certain increase in a schools performance  
+---
+### How to Build It Yourself
+###### Note: Local build only available on the 'Final version' commit [here](https://github.com/bls0053/ml-school-tool/commit/16cca6d4d8fcc3ee68e22faeafa2a95af7ab032b) and all previous commits. Later commits split the repo for deployment purposes - Flask/backend [here](https://github.com/bls0053/ml-school-flask) and React/frontend [here](https://github.com/bls0053/ml-school-tool).
+1. **Clone the Repository**  
+    $`git clone https://github.com/bls0053/ml-school-tool.git`
+    Checkout local version:
+    $`git checkout 16cca6d` 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+2. **Activate Python Virtual Environment**  
+Navigate into the api directory:
+$ `cd ml-school-tool/api`
+Run:  
+$`venv/scripts/activate`  
 
-## Expanding the ESLint configuration
+3. **Install Python Dependencies**  
+    Navigate into venv:
+    $ `cd ml-school-tool/api/venv`
+    Run:
+    $ `pip install -r requirements.txt`
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+4. **Run the Flask Server** 
+    $ `Flask run`
 
-- Configure the top-level `parserOptions` property like this:
+5. **Install React Dependencies**  
+    Navigate into project folder:
+    $ `cd ml-school-tool`
+    Run:
+    $ `npm install`
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+6. **Run the Development Server**  
+   Start the development server with:  
+   `npm run dev`
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+---
+You can check out the full version here [https://ml-school-tool.vercel.app/](https://ml-school-tool.vercel.app/)
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+
+
