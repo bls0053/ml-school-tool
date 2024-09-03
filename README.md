@@ -14,29 +14,29 @@ For each trial, the user is presented with 2 main pieces of data
     $`git checkout 16cca6d` 
 
 2. **Activate Python Virtual Environment**  
-Navigate into the api directory:
-$ `cd ml-school-tool/api`
-Run:  
-$`venv/scripts/activate`  
+    Navigate into the api directory:\
+    $ `cd ml-school-tool/api`\
+    Run:\
+    $`venv/scripts/activate`\
 
 3. **Install Python Dependencies**  
-    Navigate into venv:
-    $ `cd ml-school-tool/api/venv`
-    Run:
-    $ `pip install -r requirements.txt`
+    Navigate into venv:\
+    $ `cd ml-school-tool/api/venv`\
+    Run:\
+    $ `pip install -r requirements.txt`\
 
 4. **Run the Flask Server** 
-    $ `Flask run`
+    $ `Flask run`\
 
 5. **Install React Dependencies**  
-    Navigate into project folder:
-    $ `cd ml-school-tool`
-    Run:
-    $ `npm install`
+    Navigate into project folder:\
+    $ `cd ml-school-tool`\
+    Run:\
+    $ `npm install`\
 
 6. **Run the Development Server**  
-   Start the development server with:  
-   `npm run dev`
+    Start the development server with:\ 
+    `npm run dev`\
 
 ---
 You can check out the full version here [https://ml-school-tool.vercel.app/](https://ml-school-tool.vercel.app/)
