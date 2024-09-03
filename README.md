@@ -17,7 +17,7 @@ For each trial, the user is presented with 2 main pieces of data
     Navigate into the api directory:\
     $ `cd ml-school-tool/api`\
     Run:\
-    $`venv/scripts/activate`
+    $ `venv/scripts/activate`
 
 3. **Install Python Dependencies**  
     Navigate into venv:\
@@ -36,7 +36,7 @@ For each trial, the user is presented with 2 main pieces of data
 
 6. **Run the Development Server**  
     Start the development server with:\ 
-    `npm run dev`
+    $ `npm run dev`
 
 ---
 You can check out the full version here [https://ml-school-tool.vercel.app/](https://ml-school-tool.vercel.app/)
