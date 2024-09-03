@@ -105,7 +105,8 @@ const Lasso: React.FC<LassoProps> = ({ bool,
 
     useEffect(() => {
 
-        if (bool == false) {
+        console.log("lasso{", bool, "}")
+        if (!bool) {
             lasso(alpha, tolerance, reduction);
             
             console.log("lasso{ loading lasso }")
@@ -114,9 +115,8 @@ const Lasso: React.FC<LassoProps> = ({ bool,
         else {
             return;
         }
-    }, [lassoComplete]);
+    }, []);
 
-    
 
     const lasso = async (alpha: string, tolerance: string, reduction: string) => {
 
@@ -232,7 +232,7 @@ const Lasso: React.FC<LassoProps> = ({ bool,
             </div>
                 
             <div className='flex flex-row flex-wrap justify-center gap-2'>
-                <Button variant="outline" onClick={() => goBackToData()}><ArrowLeft/>Back To Data</Button>
+                <Button variant="outline" disabled={predictorClicked} onClick={() => goBackToData()}><ArrowLeft/>Back To Data</Button>
                 
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

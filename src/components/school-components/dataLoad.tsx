@@ -116,7 +116,6 @@ const DataLoad: React.FC<DataLoadProps> = ({ bool, lassoClicked, dataLoadedCompl
 
     useEffect(() => {
         fetchLength()
-        fetchData("curr")
     }, [limit])
 
     useEffect(() => {
@@ -138,14 +137,14 @@ const DataLoad: React.FC<DataLoadProps> = ({ bool, lassoClicked, dataLoadedCompl
     },[columns])
 
 
-    function pageFormat(num: number) {
-        return setLimit(num);
-    };  
+  
 
     function handleCheckboxChange(num: number) {
         return (checked: boolean) => {
             if (checked) {
-                pageFormat(num);
+                let newStart = num * (Math.floor(start/num));
+                setStart(newStart);
+                setLimit(num);
             }
         };
     }
@@ -168,7 +167,7 @@ const DataLoad: React.FC<DataLoadProps> = ({ bool, lassoClicked, dataLoadedCompl
                 <div className='flex flex-row gap-2 justify-center'>
                     <Button variant="outline" onClick={() => fetchData("prev")} disabled={start === 0}><ArrowLeft/></Button>
                     <div className='bg-slate-600 bg-opacity-35 text-white rounded-md p-2'>
-                        {start===0 ? 1 : (start/limit) + 1} / {Math.ceil(length/limit) + 1} 
+                        {start===0 ? 1 : Math.floor(start/limit) + 1} / {Math.ceil(length/limit) + 1} 
                     </div>
                     <Button variant="outline" onClick={() => fetchData("next")}><ArrowRight/></Button>
                 </div>
