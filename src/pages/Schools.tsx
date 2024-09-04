@@ -1,11 +1,11 @@
 
 import { Header } from '../components/generic-components/header'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import DataLoad from '../components/school-components/dataLoad'
 import DataInit from '../components/school-components/dataInit'
 import Lasso from '../components/school-components/lasso'
 import Predict from '../components/school-components/predictor'
-
+import { incrementVisitCount } from '../lib/pocketbase.js'
 
 
 
@@ -47,7 +47,9 @@ function Schools() {
       setPredictorClicked(false)
   }
 
-
+  useEffect(() => {
+    incrementVisitCount()
+  },[])
 
 
 return (

@@ -311,9 +311,8 @@ const Lasso: React.FC<LassoProps> = ({ bool,
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <div className='flex flex-col gap-2 w-72'>
-                                            <p>Regularization parameter:</p> 
-                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
-                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                            <p>Index of the School you want to make a prediction on:</p> 
+                                            <p>An index of "1" will run the models on the first element in the dataset.</p>
                                         </div>
                                     </TooltipContent>
                                 </Tooltip>
@@ -333,9 +332,9 @@ const Lasso: React.FC<LassoProps> = ({ bool,
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <div className='flex flex-col gap-2 w-72'>
-                                            <p>Regularization parameter:</p> 
-                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
-                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                            <p>Early exit number:</p> 
+                                            <p>The model will iterate until it hits the target or exceeds this amount of iterations.</p>
+                                            <p>Prevents the model from iterating forever if it doesnt converge.</p>
                                         </div>
                                     </TooltipContent>
                                 </Tooltip>
@@ -355,9 +354,9 @@ const Lasso: React.FC<LassoProps> = ({ bool,
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <div className='flex flex-col gap-2 w-72'>
-                                            <p>Regularization parameter:</p> 
-                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
-                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                            <p>Allowed margin of error for prediction:</p> 
+                                            <p>The model will stop if the prediciton is within this amount of the target.</p>
+                                            <p>The smaller this value is, the more precise the result will be - and the longer the model will take.</p>
                                         </div>
                                     </TooltipContent>
                                 </Tooltip>
@@ -377,9 +376,9 @@ const Lasso: React.FC<LassoProps> = ({ bool,
                                     </TooltipTrigger>
                                     <TooltipContent>
                                         <div className='flex flex-col gap-2 w-72'>
-                                            <p>Regularization parameter:</p> 
-                                            <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
-                                            <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                            <p>Target achievment desired:</p> 
+                                            <p>This is the achievment you want the chosen school to reach.</p>
+                                            <p>This value is a z-score, so a target of 0 would be 0 standard deviations above the mean.</p>
                                         </div>
                                     </TooltipContent>
                                 </Tooltip>
@@ -392,7 +391,20 @@ const Lasso: React.FC<LassoProps> = ({ bool,
                             />
                         </div>
                         <div className="grid grid-cols-3 items-center gap-4">
-                            <Label htmlFor="lock">Feature Lock:</Label>
+                        <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger asChild>
+                                        <Label htmlFor="lock">Feature Lock:</Label>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                        <div className='flex flex-col gap-2 w-72'>
+                                            <p>Features to be 'locked':</p> 
+                                            <p>Some features are unrealistic to change to increase performance, so these can be 'locked'.</p>
+                                            <p>Variables typically locked are race demographic, year, or grade.</p>
+                                        </div>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
                             <DropdownMenu>
                                 <DropdownMenuTrigger className='w-full' asChild>
                                     <Button variant="outline" className='col-span-2 h-8'><ChevronDown/></Button>

@@ -216,6 +216,7 @@ const DataLoad: React.FC<DataLoadProps> = ({ bool, lassoClicked, dataLoadedCompl
                                             <p>Regularization parameter:</p> 
                                             <p>Responsible for the penalty applied to coefficients - can help reduce overfitting.</p>
                                             <p>As Alpha increases, more coefficients are reduced to 0.</p>
+                                            <p>Typically a value from [0.1 - 0.00001]</p>
                                         </div>
                                     </TooltipContent>
                                 </Tooltip>
@@ -239,6 +240,7 @@ const DataLoad: React.FC<DataLoadProps> = ({ bool, lassoClicked, dataLoadedCompl
                                             <p>Responsible for determining when the algorithm halts.</p>
                                             <p>As Tolerance increases, the algorithm might stop too early.</p>
                                             <p>As Tolerance decreases, the algorithm becomes more precise - but also may not converge.</p>
+                                            <p>Typically a value from [0.1 - 0.000001]</p>
                                         </div>
                                             
                                     </TooltipContent>
@@ -260,8 +262,10 @@ const DataLoad: React.FC<DataLoadProps> = ({ bool, lassoClicked, dataLoadedCompl
                                     <TooltipContent>
                                         <div className='flex flex-col gap-2 w-72'>
                                             <p>Reduction Threshold:</p> 
-                                            <p>Arbitrary non-Lasso threshold variable for removing coefficients</p>
+                                            <p>Arbitrary non-Lasso threshold variable for removing coefficients.</p>
                                             <p>Can be used to remove coefficients under a desired value.</p>
+                                            <p>Typically a value of [0.1 &gt; reduction &gt; 0 ]</p>
+                                            <p>A reduction of 0 will remove only fully reduced coefficients.</p>
                                         </div>
                                             
                                     </TooltipContent>
