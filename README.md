@@ -9,7 +9,7 @@ For each trial, the user is presented with 2 main pieces of data
 ---
 ### How to Build It Yourself (Current Version)
 Flask/backend [here](https://github.com/bls0053/ml-school-flask) and React/frontend [here](https://github.com/bls0053/ml-school-tool).
-1. **Clone the Flask Repository**/
+1. **Clone the Flask Repository**\
     $ `git clone https://github.com/bls0053/ml-school-flask.git`
 
 2. **Activate Python Virtual Environment**\
@@ -40,7 +40,7 @@ Flask/backend [here](https://github.com/bls0053/ml-school-flask) and React/front
 2. **Activate Python Virtual Environment**\
     Navigate into the api directory:\
     $ `cd ml-school-tool/api`\
-    Run:/
+    Run:\
     $`venv/scripts/activate`
 
 3. **Install Python Dependencies**\
