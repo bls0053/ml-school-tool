@@ -61,7 +61,7 @@ export function BarNegative({ data }: BarNegativeProps) {
                 tick={{ textAnchor: "end", fontSize: 9 }} 
                 tickMargin={1} 
                 padding={{ top: 0, bottom: 0 }}
-                interval={0}
+                
                 
             />
                 
