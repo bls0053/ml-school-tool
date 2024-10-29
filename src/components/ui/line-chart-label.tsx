@@ -83,15 +83,7 @@ export function LineChartLabel({ data }: LineChartProps ) {
                     </LineChart>
                 </ChartContainer>
             </CardContent>
-            <CardFooter className="flex-col items-start text-sm w-full">
-                <div className="flex font-medium leading-none mb-2">
-                {/* Model progress */}
-                </div>
-                <div className="leading-none text-muted-foreground">
-                {/* Each dot represents one prediction. The first entry is the initial performance of the chosen school and
-                the last is the closest prediction to the achvz chosen.  */}
-                </div>
-            </CardFooter>
+            
         </Card>
   )
 }
