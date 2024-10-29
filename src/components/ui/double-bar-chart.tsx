@@ -74,7 +74,7 @@ export function DoubleBarChart({ data }: BarChartProps ) {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm ">
         <div className="flex gap-2 font-medium leading-none">
-        
+        <div></div>
         </div>
         <div className="leading-none text-muted-foreground">
         
