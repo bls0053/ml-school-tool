@@ -199,7 +199,9 @@ const Predict: React.FC<PredictProps> = ({ bool, predictInit, goBackToLasso, goB
 
     if (!bool) {
         return (
-            <div className="">
+            <div className="flex flex-col justify-center items-center gap-1 mt-4">
+                <div>Please wait for ExtraTrees model to load</div>
+                <div>( Can take 30-60 seconds )</div>
                 <CircularProgress/>
             </div>
         )

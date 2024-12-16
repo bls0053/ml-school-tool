@@ -216,7 +216,9 @@ const Lasso: React.FC<LassoProps> = ({ bool,
 
     if (!bool) {
         return (
-            <div className="">
+            <div className="flex flex-col justify-center items-center gap-1">
+                <div>Please wait for Lasso model to load</div>
+                <div>( Can take 30-60 seconds )</div>
                 <CircularProgress/>
             </div>
         )
